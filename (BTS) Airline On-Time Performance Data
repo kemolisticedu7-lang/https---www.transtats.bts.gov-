@@ -1,0 +1,101 @@
+Name: FOUNDATION_1.md
+# Foundation 1 – Dataset Discovery & Architecture Exploration  
+**Course:** CIDM 6330  
+**Student:** Oluwakemi Innocent  
+
+---
+
+## 1. Dataset Selection Justification
+
+### Source and Scope
+I selected the **Bureau of Transportation Statistics (BTS) Airline On-Time Performance Data**. This dataset contains detailed records of domestic U.S. commercial flights, including departure and arrival times, delays, cancellations, diversions, and operational metadata. In addition to the core on-time performance dataset, I identified the **BTS Airline Carrier Lookup Table** as a related dataset required to resolve airline carrier codes into carrier names.
+
+### Access Verification
+The dataset is publicly accessible via the BTS website and is available as downloadable CSV files organized by year and month. I successfully downloaded sample data and verified accessibility by loading the data locally.
+
+A sample of the retrieved data is shown below:
+
+| FlightDate | Carrier | Origin | Dest | DepDelay |
+|------------|--------|--------|------|----------|
+| 2023-01-15 | AA     | DFW    | LAX  | 12       |
+| 2023-01-15 | DL     | ATL    | JFK  | -3       |
+
+Supporting evidence (CSV excerpt and access screenshot) is included in the `evidence/` directory.
+
+### Relational Depth
+The on-time performance dataset references several external entities via coded fields. One key relationship is between the `Carrier` field in the flight records and the carrier lookup table, which maps carrier codes (e.g., "AA", "DL") to airline names. These datasets can be joined on the carrier code to enrich flight records with descriptive airline information.
+
+Additional potential relationships include airport codes (origin and destination) that may be joined with airport reference datasets.
+
+### Temporal Characteristics
+- **Update frequency:** Monthly
+- **Historical depth:** Over 20 years of historical flight data
+- **Time granularity:** Individual flight events with date-level granularity
+
+This temporal depth enables both short-term operational analysis and long-term trend analysis.
+
+### Why This Dataset
+I selected this dataset due to its operational scale, rich relational structure, and relevance to real-world performance and reliability questions. Aviation data is inherently complex, and this dataset offers sustained analytical depth suitable for a semester-long architecture project.
+
+---
+
+## 2. Initial Problem Space
+
+### Domain Observations
+While exploring the dataset, I observed that flight delay values are unevenly distributed, with a small number of extreme delays contributing disproportionately to overall averages. Certain airports and carriers appear repeatedly in delay-heavy records. Additionally, some delay cause fields are sparsely populated, indicating potential data quality or reporting inconsistencies.
+
+### Candidate Problems
+The dataset could potentially support the following business problems:
+
+1. Predicting the likelihood of flight delays based on route, carrier, and time of day  
+2. Identifying airports with systemic delay risks  
+3. Comparing airline on-time performance across similar routes  
+4. Analyzing seasonal delay patterns across regions  
+5. Detecting routes prone to cascading delays during peak travel periods  
+
+These represent exploratory candidates rather than finalized problem statements.
+
+### Questions I Can’t Yet Answer
+- How complete and reliable are the delay cause fields across all years?
+- What data volume constraints would impact near-real-time analytics?
+- What level of prediction accuracy would be operationally useful?
+- Are there regulatory or reporting changes that affect data consistency over time?
+
+---
+
+## 3. Architecture Characteristics Discovery
+
+### Candidate Characteristics
+
+1. **Scalability**  
+   The dataset grows monthly and contains millions of records per year, requiring architectures that can scale with increasing data volume.
+
+2. **Performance**  
+   Candidate problems such as delay prediction or route comparison may require fast query and aggregation performance.
+
+3. **Data Consistency**  
+   Relational joins across carriers, airports, and flight records require consistent reference data to avoid incorrect results.
+
+4. **Evolvability**  
+   The dataset schema and reporting fields may evolve over time, necessitating flexible system designs.
+
+5. **Reliability**  
+   Analytical results may inform operational or planning decisions, making data accuracy and system reliability important.
+
+6. **Observability**  
+   Data ingestion and transformation pipelines would require monitoring to detect data quality issues or ingestion failures.
+
+### Anticipated Tensions
+- Scalability vs. performance when querying large historical datasets
+- Data consistency vs. ingestion speed if data pipelines are optimized for throughput
+- Evolvability vs. schema enforcement in downstream systems
+
+### What I Don’t Know Yet
+- Whether real-time or near-real-time ingestion will be required
+- What latency thresholds are acceptable for users
+- Which analytical use case will ultimately drive architectural priorities
+
+---
+
+## Submission Confirmation
+I have reviewed this submission for clarity, accuracy, and completeness before submitting.
