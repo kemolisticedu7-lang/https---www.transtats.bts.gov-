@@ -1,0 +1,4 @@
+evidence/sample_data.csv
+FlightDate,Carrier,Origin,Dest,DepDelay
+2023-01-15,AA,DFW,LAX,12
+2023-01-15,DL,ATL,JFK,-3
